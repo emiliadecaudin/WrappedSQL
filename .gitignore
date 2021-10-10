@@ -1,0 +1,14 @@
+# Virtual Environment
+
+.venv
+.project
+
+# Compiled Python
+
+__pycache__
+*.pyc
+
+# Distribution Packages
+
+dist
+*.egg-info/
