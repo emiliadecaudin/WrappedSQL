@@ -19,12 +19,22 @@ class WrappedDatabase:
         self.user = user
         self.password = password
         self.ssl = ssl
-        
+
         self.connections = []
 
     def __str__(self) -> Text:
 
         return(f"mysql://{self.user}@{self.host}:{self.port}")
+
+    def __enter__(self) -> 'WrappedDatabase':
+
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb) -> 'WrappedDatabase':
+
+        self.closeAll()
+
+        return self
 
     def getConnection(self, database: Text, **options) -> WrappedConnection:
 
