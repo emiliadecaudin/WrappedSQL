@@ -30,11 +30,9 @@ class WrappedDatabase:
 
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> 'WrappedDatabase':
+    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
 
         self.closeAll()
-
-        return self
 
     def getConnection(self, database: Text, **options) -> WrappedConnection:
 
