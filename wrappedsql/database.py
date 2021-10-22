@@ -1,19 +1,12 @@
-#----Standard Library Imports------------------------------------------------#
-
-from typing import Text
-
-#----Internal Imports--------------------------------------------------------#
-
-from .connection import WrappedConnection
-
 #----Class Declarations------------------------------------------------------#
 
 class WrappedDatabase:
 
     #----Instance Methods----------------------------------------------------#
 
-    def __init__(self, host: Text, user: Text, port: int = 3306, password: Text = None, ssl: dict = None) -> None:
+    def __init__(self, generator: type, /, host: str, user: str, port: int = 3306, password: str = None, ssl: dict = None) -> None:
 
+        self.generator = generator
         self.host = host
         self.port = port
         self.user = user
@@ -22,7 +15,7 @@ class WrappedDatabase:
 
         self.connections = []
 
-    def __str__(self) -> Text:
+    def __str__(self) -> str:
 
         return(f"mysql://{self.user}@{self.host}:{self.port}")
 
@@ -30,27 +23,26 @@ class WrappedDatabase:
 
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, exc_type, exc_value, exc_traceback) -> None:
 
         self.closeAll()
 
-    def getConnection(self, database: Text, **options) -> WrappedConnection:
+    def getConnection(self, database: str, **options):
 
-        if (self.connections):
+        connection = self.generator.connect(host = self.host,
+                                     port = self.port,
+                                     user = self.user,
+                                     password = self.password,
+                                     ssl = self.ssl,
+                                     database = database,
+                                     **options)
 
-            for connection in self.connections:
-
-                if(not connection.in_use and connection.database == database and connection.options == options):
-
-                    return connection
-
-        connection = WrappedConnection(self, database = database, **options)
         self.connections.append(connection)
 
         return connection
 
     def closeAll(self) -> None:
 
-        for connection in self.connections:
+        for connection in [connection for connection in self.connections if connection.open]:
 
             connection.close()

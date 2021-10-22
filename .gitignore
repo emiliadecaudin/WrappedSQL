@@ -1,7 +1,6 @@
 # Virtual Environment
 
 .venv
-.project
 
 # Compiled Python
 
@@ -12,3 +11,7 @@ __pycache__
 
 dist
 *.egg-info/
+
+# macOS Junk
+
+.DS_Store
