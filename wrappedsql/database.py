@@ -41,6 +41,20 @@ class WrappedDatabase:
 
         return connection
 
+    def cursorGenerator(self, buffered: bool, dictionary: bool) -> type:
+
+        match self.generator:
+            case pymysql:
+                match (buffered, dictionary):
+                    case (False, False):
+                        return pymysql.cursors.SSCursor
+                    case (False, True):
+                        return pymysql.cursors.SSDictCursor
+                    case (True, False):
+                        return pymysql.cursors.Cursor
+                    case (True, True):
+                        return pymysql.cursors.DictCursor
+
     def closeAll(self) -> None:
 
         for connection in [connection for connection in self.connections if connection.open]:
