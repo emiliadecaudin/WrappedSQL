@@ -17,7 +17,7 @@ class WrappedDatabase:
 
     def __str__(self) -> str:
 
-        return(f"mysql://{self.user}@{self.host}:{self.port}")
+        return(f"mysql{'ssl' if self.ssl else ''}://{self.user}@{self.host}:{self.port}")
 
     def __enter__(self) -> 'WrappedDatabase':
 
@@ -27,7 +27,7 @@ class WrappedDatabase:
 
         self.closeAll()
 
-    def getConnection(self, database: str, **options):
+    def getConnection(self, database: str, **options) -> 'pymysql.connections.Connection | ...':
 
         connection = self.generator.connect(host = self.host,
                                      port = self.port,
