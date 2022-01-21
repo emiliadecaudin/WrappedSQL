@@ -1,6 +1,6 @@
-# Virtual Environment
+# Poetry
 
-.venv
+poetry.lock
 
 # Compiled Python
 
@@ -10,8 +10,3 @@ __pycache__
 # Distribution Packages
 
 dist
-*.egg-info/
-
-# macOS Junk
-
-.DS_Store

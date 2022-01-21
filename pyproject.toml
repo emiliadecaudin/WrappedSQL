@@ -1,6 +1,23 @@
+[tool.poetry]
+name = "WrappedSQL"
+version = "0.1.0"
+description = "Simple wrappers around SQL database connections, for scripts."
+authors = ["Émilia Decaudin <me@edecaud.in>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+black = "^21.12-beta.0"
+pre-commit = "^2.17.0"
+flake8 = "^4.0.1"
+
+[tool.black]
+target-version = ["py310"]
+
 [build-system]
 requires = [
-    "setuptools>=42",
-    "wheel"
+    "poetry-core>=1.0.0"
 ]
-build-backend = "setuptools.build_meta"
+build-backend = "poetry.core.masonry.api"
